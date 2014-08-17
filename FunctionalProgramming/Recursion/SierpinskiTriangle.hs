@@ -11,8 +11,7 @@ sierpinski empty fill height nFrac =
   else let nextHeight = height `div` 2
            nextS = sierpinski empty fill (height `div` 2) (nFrac - 1) 
            centerline = box empty nextHeight 1
-       in padHorz empty nextHeight nextS <^> (nextS <=> centerline <=> nextS)
+       in padLR empty nextHeight nextS <^> (nextS <=> centerline <=> nextS)
           
 sierpinskiMain :: IO ()
 sierpinskiMain = getLine >>= putASCIIMatrix . sierpinski '_' '1' 32 . read
-

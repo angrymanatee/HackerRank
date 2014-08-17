@@ -58,7 +58,57 @@ triangleLayer empty fill totalWidth fillWidth =
                  else fill : triangleLayer' empty fill nEmpty (nFill - 1)
             else empty : triangleLayer' empty fill (nEmpty - 1) nFill
 
-padHorz :: a -> Int -> Matrix a -> Matrix a
-padHorz fill padWidth mat = b <=> mat <=> b
-  where height = length $ fromMatrix mat
-        b = box fill height padWidth
+diagonalMatrix :: a -> a -> Int -> Matrix a
+diagonalMatrix empty fill width = 
+  Matrix $ map (diagonalLayer empty fill width) [0..width-1]
+
+diagonalLayer :: a -> a -> Int -> Int -> [a]
+diagonalLayer empty fill width index =
+          if index == 0
+          then fill : replicate (pred width) empty
+          else empty : diagonalLayer empty fill (pred width) (pred index)
+
+
+-- Assumes matrix is constant width in all columns
+matWidth :: Matrix a -> Int
+matWidth = length . head . fromMatrix
+
+matHeight :: Matrix a -> Int
+matHeight = length . fromMatrix
+
+-- Pad left side of matrix
+padL :: a -> Int -> Matrix a -> Matrix a
+padL fill padWidth mat = b <=> mat
+  where b = box fill (matHeight mat) padWidth
+
+-- Pad right side of matrix
+padR :: a -> Int -> Matrix a -> Matrix a
+padR fill padWidth mat = mat <=> b
+  where b = box fill (matHeight mat) padWidth
+        
+-- Pad top of matrix
+padT :: a -> Int -> Matrix a -> Matrix a
+padT fill padHeight mat = b <^> mat
+  where b = box fill padHeight (matWidth mat)
+
+-- Pad bottom of matrix
+padB :: a -> Int -> Matrix a -> Matrix a
+padB fill padHeight mat = mat <^> b
+  where b = box fill padHeight (matWidth mat)
+
+-- Pad both left and right side of matrix (equally)
+padLR :: a -> Int -> Matrix a -> Matrix a
+padLR fill padWidth mat = b <=> mat <=> b
+  where b = box fill (matHeight mat) padWidth
+
+-- Pad both top and bottom of matrix
+padTB :: a -> Int -> Matrix a -> Matrix a
+padTB fill padHeight mat = b <^> mat <^> b
+  where b = box fill padHeight (matWidth mat)
+
+
+flipLR :: Matrix a -> Matrix a
+flipLR = Matrix . map reverse . fromMatrix
+
+flipUD :: Matrix a -> Matrix a
+flipUD = Matrix . reverse . fromMatrix
