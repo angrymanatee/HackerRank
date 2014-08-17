@@ -1,0 +1,2 @@
+module SierpinskiTriangle where
+

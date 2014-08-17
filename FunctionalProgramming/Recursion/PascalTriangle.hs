@@ -1,6 +1,8 @@
 module PascalTriangle where
 
 import Data.List
+import Common
+
 
 -- Pascal's Triangle
 pascal :: Integral a => a -> [[a]]
