@@ -1,14 +1,6 @@
 module GCDWarmup where
 
 import Text.Printf (printf)
-
-
--- Useful functions
-factorial :: Integral a => a -> a
-factorial n 
-  | n < 0  = (-1)
-  | n == 0 = 1
-  | otherwise = n * factorial (n - 1)
                 
 
 -- Functional Programming: Warmups in Recursion - Computing the GCD
